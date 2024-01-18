@@ -72,6 +72,53 @@
       "options": {
         "jestConfig": "apps/nx-theme/jest.config.ts"
       }
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "apps/nx-theme/.storybook",
+        "browserTarget": "nx-theme:build-storybook",
+        "compodoc": false
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/nx-theme",
+        "configDir": "apps/nx-theme/.storybook",
+        "browserTarget": "nx-theme:build-storybook",
+        "compodoc": false
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c apps/nx-theme/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "nx-theme:build-storybook",
+        "staticFilePath": "dist/storybook/nx-theme"
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "nx-theme:build-storybook:ci"
+        }
+      }
     }
   }
 }
